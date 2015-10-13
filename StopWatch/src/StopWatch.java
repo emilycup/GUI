@@ -18,6 +18,7 @@ public class StopWatch implements ActionListener
 {
 	JLabel jlabel;
 	long time = 0;
+	boolean startPressed = false;
 	
 	public StopWatch(){
 		
@@ -63,11 +64,19 @@ public class StopWatch implements ActionListener
 		{
 			jlabel.setText("The Stopwatch has started...");
 			time = e.getWhen();
+			startPressed = true;
 		}
 		else
 		{
 			time = e.getWhen() - time;
-			jlabel.setText("Time Stopped: " + (time / 1000.0) + " sec");
+			if (startPressed == true)
+			{
+				jlabel.setText("Time Stopped: " + (time / 1000.0) + " sec");
+			}
+			else
+			{
+				jlabel.setText("You need to press the START button first");
+			}
 		}
 		
 	}
