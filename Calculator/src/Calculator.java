@@ -28,11 +28,14 @@ public class Calculator implements ActionListener {
     public JTextField displayText;
 
     // variables dealing with logic
-    StringBuilder buildDisplayText = new StringBuilder();
+    public boolean equalPressed;
     public String operator;
     public String answer;
     public String op1 = null;
     public String op2 = null;
+    public String result;
+    StringBuilder buildDisplayText = new StringBuilder();
+
 
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -53,7 +56,7 @@ public class Calculator implements ActionListener {
         // add image icon to frame
         URL icon = null;
         try {
-            icon = new URL("http://drrelocation.com/images/CalculatorIcon.png");
+            icon = new URL("http://www.cpp.edu/~tvnguyen7/courses/cs245f15/projs/Calculator.png");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -151,46 +154,34 @@ public class Calculator implements ActionListener {
                 break;
             case "/":
                 if (op1 != null && op2 != null){
-                    executeOperation(op1, op2, operator);
+                    doMath(op1, op2, operator);
                 }else{
                     operator = "/";
-                    if (op1 == null){
-                        op1 = buildDisplayText.toString();
-                        buildDisplayText.setLength(0);
-                    }
+                    executeOperation(operator);
                 }
                 break;
             case "*":
                 if (op1 != null && op2 != null){
-                    executeOperation(op1, op2, operator);
+                    doMath(op1, op2, operator);
                 }else{
                     operator = "*";
-                    if (op1 == null){
-                        op1 = buildDisplayText.toString();
-                        buildDisplayText.setLength(0);
-                    }
+                    executeOperation(operator);
                 }
                 break;
             case "-":
                 if (op1 != null && op2 != null){
-                    executeOperation(op1, op2, operator);
+                    doMath(op1, op2, operator);
                 }else{
                     operator = "-";
-                    if (op1 == null){
-                        op1 = buildDisplayText.toString();
-                        buildDisplayText.setLength(0);
-                    }
+                    executeOperation(operator);
                 }
                 break;
             case"+":
                 if (op1 != null && op2 != null){
-                    executeOperation(op1, op2, operator);
+                    doMath(op1, op2, operator);
                 }else{
                     operator = "+";
-                    if (op1 == null){
-                        op1 = buildDisplayText.toString();
-                        buildDisplayText.setLength(0);
-                    }
+                    executeOperation(operator);
                 }
                 break;
             case "C":
@@ -207,12 +198,14 @@ public class Calculator implements ActionListener {
                     disableButtons();
                     resetVariables();
                 }else {
-                    String result = executeOperation(op1, op2, operator);
+                    result = doMath(op1, op2, operator);
                     displayText.setText(result);
                     op1 = result;
                     op2 = null;
                     operator = null;
                     buildDisplayText.setLength(0);
+                    //resetVariables();
+                    equalPressed = true;
                 }
                 break;
         }
@@ -232,21 +225,40 @@ public class Calculator implements ActionListener {
     // -----------------------------------------------------------------------------------------------------------------
     //  executeOperation:
     //
+    //              Will set operands depending on certain cases
+    // -----------------------------------------------------------------------------------------------------------------
+    public void executeOperation(String operator){
+        if (op1 == null){
+            op1 = buildDisplayText.toString();
+            buildDisplayText.setLength(0);
+        }
+        else if(equalPressed){
+            equalPressed = false;
+            if (!buildDisplayText.toString().isEmpty()){
+                op1 = buildDisplayText.toString();
+                buildDisplayText.setLength(0);
+            }
+        }
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    //  doMath:
+    //
     //              Will execute primary mathematical operations (/ * - +)
     // -----------------------------------------------------------------------------------------------------------------
-    public String executeOperation(String operand1, String operand2, String operator){
+    public String doMath(String operand1, String operand2, String operator){
         switch(operator){
             case "/":
-                answer = Integer.toString(Integer.parseInt(operand1) / Integer.parseInt(operand2));
+                answer = Long.toString(Long.parseLong(operand1) / Long.parseLong(operand2));
                 break;
             case "*":
-                answer = Integer.toString(Integer.parseInt(operand1) * Integer.parseInt(operand2));
+                answer = Long.toString(Long.parseLong(operand1) * Long.parseLong(operand2));
                 break;
             case "-":
-                answer = Integer.toString(Integer.parseInt(operand1) - Integer.parseInt(operand2));
+                answer = Long.toString(Long.parseLong(operand1) - Long.parseLong(operand2));
                 break;
             case "+":
-                answer = Integer.toString(Integer.parseInt(operand1) + Integer.parseInt(operand2));
+                answer = Long.toString(Long.parseLong(operand1) + Long.parseLong(operand2));
                 break;
         }
         return answer;
@@ -298,13 +310,13 @@ public class Calculator implements ActionListener {
     //          Main method that will start the GUI
     // -----------------------------------------------------------------------------------------------------------------
     public static void main(String[] args) {
-        // will allow this application's look and feel to be consistent across all platforms (I am using OSX)
-        try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-            JFrame.setDefaultLookAndFeelDecorated(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        // will allow this application's look and feel to be consistent across all platforms (I am using OSX)
+//        try {
+//            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+//            JFrame.setDefaultLookAndFeelDecorated(true);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
