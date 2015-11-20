@@ -206,9 +206,6 @@ public class Rolodex {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
-        //createContactTab(name, email, photo);
-
     }
 
     /**
@@ -220,16 +217,17 @@ public class Rolodex {
         JPanel myContact = new JPanel(new GridLayout());
         JPanel verticalAlign = new JPanel(new FlowLayout(FlowLayout.LEADING, 5, 5));
 
-        // adding image
+        // add image info
         ImageIcon icon = new ImageIcon("src/Rolodex-res/nopic.jpg");
         myContact.add(new JLabel(icon));
 
-        // adding name
+        // add name info
         JLabel nameLabel = new JLabel("Name:");
         JTextField nameField = new JTextField("Emily Le", 15);
         verticalAlign.add(nameLabel);
         verticalAlign.add(nameField);
 
+        // add email info
         JLabel emailLabel = new JLabel("Email:");
         JTextField emailField = new JTextField("eemly.le@gmail.com", 15);
         verticalAlign.add(emailLabel);
@@ -261,22 +259,16 @@ public class Rolodex {
             contactPanel.add(new JLabel(icon));
 
             // adds label
-//            JPanel vertical1 = new JPanel();
             JLabel nameLabel = new JLabel("Name:");
             JTextField nameField = new JTextField(name[i], 15);
             verticalAlign.add(nameLabel);
             verticalAlign.add(nameField);
-//            vertical1.add(nameLabel);
-//            vertical1.add(nameField);
 
             // adds email
-//            JPanel vertical2 = new JavaPanel();
             JLabel emailLabel = new JLabel("Email:");
             JTextField emailField = new JTextField(email[i], 15);
             verticalAlign.add(emailLabel);
             verticalAlign.add(emailField);
-//            vertical2.add(emailLabel);
-//            vertical2.add(emailField);
 
             contactPanel.add(verticalAlign);
 
@@ -293,14 +285,15 @@ public class Rolodex {
      * @param args
      */
     public static void main(String[] args) {
-//         will allow this application's look and feel to be consistent across all platforms (I am using OSX)
+
+        // will allow this application's look and feel to be consistent across all platforms (I am using OSX)
         try {
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             JFrame.setDefaultLookAndFeelDecorated(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+s
         SwingUtilities.invokeLater(() ->
                 new Rolodex());
     }
