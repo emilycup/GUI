@@ -1,0 +1,8 @@
+Gates, Bill:bgates@microsoft.com:bgates.jpg
+Zuckerberg, Mark:mzuckerberg@facebook.com:mzuckerberg.jpg
+Joy, Bill:bjoy@sun.com:bjoy.jpg
+Jobs, Steve:sjobs@apple.com:sjobs.jpg
+Knuth, Donald:dknuth@standford.edu:dknuth.jpg
+Dorsey, Jack:jdorsey@twitter.com:jdorsey.jpg
+Page, Larry:lpage@google.com:lpage.jpg
+Lovelace, Augusta::alovelace.jpg
