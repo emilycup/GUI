@@ -1,10 +1,18 @@
 
+//
+// Name:        Le, Emily
+// Project:     4
+// Due:         11/4/15
+// Course:      CS-245-01-f15
+//
+// Description:
+//      A basic version of Window's Notepad application
+//
+
 //import com.sun.java.util.jar.pack.Attribute.Layout;
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Font;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -12,22 +20,17 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter.DefaultHighlightPainter;
-import javax.swing.text.Highlighter;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -57,6 +60,10 @@ public class JNotepad extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        popUpCut = new javax.swing.JMenuItem();
+        popUpCopy = new javax.swing.JMenuItem();
+        popUpPaste = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         textArea = new javax.swing.JTextArea();
         menuBar = new javax.swing.JMenuBar();
@@ -95,10 +102,58 @@ public class JNotepad extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         jmiAboutNotepad = new javax.swing.JMenuItem();
 
+        jPopupMenu1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jPopupMenu1MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jPopupMenu1MouseReleased(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPopupMenu1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jPopupMenu1MouseEntered(evt);
+            }
+        });
+
+        popUpCut.setText("Cut");
+        popUpCut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popUpCutActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(popUpCut);
+
+        popUpCopy.setText("Copy");
+        popUpCopy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popUpCopyActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(popUpCopy);
+
+        popUpPaste.setText("Paste");
+        popUpPaste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popUpPasteActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(popUpPaste);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         textArea.setColumns(20);
+        textArea.setFont(new java.awt.Font("Cambria", 0, 12)); // NOI18N
         textArea.setRows(5);
+        textArea.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                textAreaMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                textAreaMouseReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(textArea);
 
         jmFile.setMnemonic('F');
@@ -143,10 +198,12 @@ public class JNotepad extends javax.swing.JFrame {
 
         jmiPageSetup.setMnemonic('u');
         jmiPageSetup.setText("Page Setup...");
+        jmiPageSetup.setEnabled(false);
         jmFile.add(jmiPageSetup);
 
         jmiPrint.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
         jmiPrint.setText("Print...");
+        jmiPrint.setEnabled(false);
         jmFile.add(jmiPrint);
         jmFile.add(jSeparator2);
 
@@ -215,14 +272,21 @@ public class JNotepad extends javax.swing.JFrame {
         jmEdit.add(jmiFind);
 
         jmiFindNext.setText("Find Next");
+        jmiFindNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiFindNextActionPerformed(evt);
+            }
+        });
         jmEdit.add(jmiFindNext);
 
         jmiReplace.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         jmiReplace.setText("Replace...");
+        jmiReplace.setEnabled(false);
         jmEdit.add(jmiReplace);
 
         jmiGoTo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
         jmiGoTo.setText("Go To...");
+        jmiGoTo.setEnabled(false);
         jmEdit.add(jmiGoTo);
         jmEdit.add(jSeparator5);
 
@@ -237,6 +301,11 @@ public class JNotepad extends javax.swing.JFrame {
 
         jMenuItem11.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));
         jMenuItem11.setText("Time/Date");
+        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem11ActionPerformed(evt);
+            }
+        });
         jmEdit.add(jMenuItem11);
 
         menuBar.add(jmEdit);
@@ -246,10 +315,20 @@ public class JNotepad extends javax.swing.JFrame {
 
         jmiWordWrap.setMnemonic('W');
         jmiWordWrap.setText("Word Wrap");
+        jmiWordWrap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiWordWrapActionPerformed(evt);
+            }
+        });
         jmFormat.add(jmiWordWrap);
 
         jmiFont.setMnemonic('F');
         jmiFont.setText("Font...");
+        jmiFont.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiFontActionPerformed(evt);
+            }
+        });
         jmFormat.add(jmiFont);
 
         menuBar.add(jmFormat);
@@ -259,6 +338,7 @@ public class JNotepad extends javax.swing.JFrame {
 
         jmiStatusBar.setMnemonic('S');
         jmiStatusBar.setText("Status Bar");
+        jmiStatusBar.setEnabled(false);
         jmView.add(jmiStatusBar);
 
         menuBar.add(jmView);
@@ -268,10 +348,16 @@ public class JNotepad extends javax.swing.JFrame {
 
         jmiViewHelp.setMnemonic('H');
         jmiViewHelp.setText("View Help");
+        jmiViewHelp.setEnabled(false);
         jmHelp.add(jmiViewHelp);
         jmHelp.add(jSeparator6);
 
         jmiAboutNotepad.setText("About Notepad");
+        jmiAboutNotepad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiAboutNotepadActionPerformed(evt);
+            }
+        });
         jmHelp.add(jmiAboutNotepad);
 
         menuBar.add(jmHelp);
@@ -456,6 +542,109 @@ public class JNotepad extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jmiFindActionPerformed
 
+    private void jmiFindNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiFindNextActionPerformed
+        String oldTargetText = targetText;
+        String targetText = textArea.getSelectedText();
+        // if there is nothing hilighted, then do nothing
+        if (targetText == null) {
+            // do nothing
+        } else {
+            String oldWholeText = wholeText;
+            wholeText = textArea.getText();
+            
+            if (!oldWholeText.equals(wholeText) || !oldTargetText.equals(targetText)) {
+                // reset caret index if user is searching for a brand new word
+                caretIndex = textArea.getSelectionEnd();
+                find(wholeText, targetText);
+            } else{
+                caretIndex =  caretIndex + targetText.length();
+                find(wholeText, targetText);
+            }
+        }
+    }//GEN-LAST:event_jmiFindNextActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a MM/dd/yyyy");
+        textArea.setText(dateFormat.format(date));
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jmiWordWrapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiWordWrapActionPerformed
+        if (!isWordWrap) {
+            textArea.setLineWrap(true);
+            isWordWrap = true;
+        } else {
+            textArea.setLineWrap(false);
+        }
+    }//GEN-LAST:event_jmiWordWrapActionPerformed
+
+    private void jmiFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiFontActionPerformed
+        JFontChooser fontChooser = new JFontChooser();
+        Font font = textArea.getFont();
+        fontChooser.setFontName(font.getFontName());
+        fontChooser.setFontStyle(font.getStyle());
+        fontChooser.setTextSize(font.getSize());
+
+        boolean result = fontChooser.showDialog(this);
+        if (result)
+         {
+            textArea.setFont(new Font(fontChooser.getSelectedFontName(),fontChooser.getSelectedFontStyle()
+                     ,fontChooser.getSelectedFontSize()));
+         }
+    }//GEN-LAST:event_jmiFontActionPerformed
+
+    private void jmiAboutNotepadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiAboutNotepadActionPerformed
+        JOptionPane.showMessageDialog(this, "JNotePad   Version 0.1 \n (c) 2015 Emily Le");
+    }//GEN-LAST:event_jmiAboutNotepadActionPerformed
+
+    private void jPopupMenu1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPopupMenu1MousePressed
+        if (evt.isPopupTrigger()) {
+            jPopupMenu1.show(this, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_jPopupMenu1MousePressed
+
+    private void jPopupMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPopupMenu1MouseClicked
+        if (evt.isPopupTrigger()) {
+            jPopupMenu1.show(this, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_jPopupMenu1MouseClicked
+
+    private void jPopupMenu1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPopupMenu1MouseReleased
+        if (evt.isPopupTrigger()) {
+            jPopupMenu1.show(this, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_jPopupMenu1MouseReleased
+
+    private void jPopupMenu1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPopupMenu1MouseEntered
+        if (evt.isPopupTrigger()) {
+            jPopupMenu1.show(this, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_jPopupMenu1MouseEntered
+
+    private void popUpCutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popUpCutActionPerformed
+        textArea.cut();
+    }//GEN-LAST:event_popUpCutActionPerformed
+
+    private void popUpCopyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popUpCopyActionPerformed
+        textArea.copy();
+    }//GEN-LAST:event_popUpCopyActionPerformed
+
+    private void popUpPasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popUpPasteActionPerformed
+        textArea.paste();
+    }//GEN-LAST:event_popUpPasteActionPerformed
+
+    private void textAreaMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textAreaMouseReleased
+        if (evt.isPopupTrigger()) {
+            jPopupMenu1.show(this, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_textAreaMouseReleased
+
+    private void textAreaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_textAreaMousePressed
+        if (evt.isPopupTrigger()) {
+            jPopupMenu1.show(this, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_textAreaMousePressed
+
     /**
      * @param args the command line arguments
      */
@@ -489,6 +678,10 @@ public class JNotepad extends javax.swing.JFrame {
                 new JNotepad().setVisible(true);
             }
         });
+    }
+    
+    private void showPopupMenu(MouseEvent e) {
+         jPopupMenu1.show(this, e.getX(), e.getY());
     }
         
     // save ====================================================================
@@ -541,9 +734,11 @@ public class JNotepad extends javax.swing.JFrame {
     private int caretIndex = 0;
     private String wholeText = "";
     private String targetText = "";
+    boolean isWordWrap = false;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem jMenuItem11;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
@@ -579,6 +774,9 @@ public class JNotepad extends javax.swing.JFrame {
     private javax.swing.JMenuItem jmiViewHelp;
     private javax.swing.JMenuItem jmiWordWrap;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem popUpCopy;
+    private javax.swing.JMenuItem popUpCut;
+    private javax.swing.JMenuItem popUpPaste;
     private javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 }
